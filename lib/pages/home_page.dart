@@ -77,23 +77,40 @@ class _HomePageState extends State<HomePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      Row(
                         children: [
-                          Text(
-                            "Hi, Arjun",
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.tertiary,
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
+                          Container(
+                            // Profile image
+                            height: 50,
+                            width: 50,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                image: AssetImage(
+                                    'assets/images/user_headshot.jpg'),
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
-                          SizedBox(height: 8),
-                          Text(
-                            '23 Jan, 2024',
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.tertiary,
-                            ),
+                          SizedBox(width: 10),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Arjun Bhat",
+                                style: TextStyle(
+                                  color: Theme.of(context).colorScheme.tertiary,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                '23 Jan, 2024',
+                                style: TextStyle(
+                                  color: Theme.of(context).colorScheme.tertiary,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -110,6 +127,34 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ],
                   ),
+                  SizedBox(height: 20),
+                  // Search bar
+                  TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Search for events',
+                      hintStyle: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontSize: 14,
+                      ),
+                      prefixIcon: Icon(Icons.search,
+                          color: Theme.of(context).colorScheme.primary),
+                      filled: true,
+                      fillColor: Theme.of(context).colorScheme.surface,
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide:
+                              BorderSide(color: Colors.grey, width: 2.0)),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.primary,
+                              width: 2.0)),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                    ),
+                  ),
+                  // display all the event tiles
+                  SizedBox(height: 20),
                 ],
               ),
             ),

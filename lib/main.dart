@@ -51,6 +51,8 @@ class _MyAppState extends State<MyApp> {
       child: MaterialApp(
         builder: Authenticator.builder(),
         home: HomePage(),
+        theme: Provider.of<ThemeProvider>(context).themeData,
+        debugShowCheckedModeBanner: false,
       ),
     );
   }

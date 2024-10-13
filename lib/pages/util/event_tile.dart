@@ -1,11 +1,8 @@
-// ignore_for_file: prefer_interpolation_to_compose_strings, prefer_const_constructors
-
 import 'package:find_my_buddy/pages/util/event_form_confirmation.dart';
 import 'package:flutter/material.dart';
 
-
-class EventTile extends StatelessWidget {
-  final image;
+class EventTile extends StatefulWidget {
+  final String image;
   final String eventName;
   final String eventTime;
   final String location;
@@ -25,17 +22,56 @@ class EventTile extends StatelessWidget {
     required this.curr_avail,
     required this.max_avail,
   }) : super(key: key);
+
+  @override
+  _EventTileState createState() => _EventTileState();
+}
+
+class _EventTileState extends State<EventTile> {
+  late int _currentAvailability;
+  bool _spotConfirmed = false; // Track if the spot has been confirmed
+
+  @override
+  void initState() {
+    super.initState();
+    _currentAvailability = widget.curr_avail; // Initialize with current availability
+  }
+
+  void _incrementAvailability() {
+    setState(() {
+      _currentAvailability++; // Increment current availability by 1
+      _spotConfirmed = true; // Mark the spot as confirmed
+    });
+  }
+
+  void _showAlreadyConfirmedMessage() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('You have already confirmed your spot.'),
+      ),
+    );
+  }
+
+  void _showMaxAvailabilityMessage() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Maximum availability reached.'),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(bottom: 10, top: 10, left: 10, right: 10),
       decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: Colors.grey,
-            width: 1,
-          )),
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: Colors.grey,
+          width: 1,
+        ),
+      ),
       child: Row(
         children: [
           Column(
@@ -43,7 +79,7 @@ class EventTile extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: Image.asset(
-                  image,
+                  widget.image,
                   height: 90,
                 ),
               ),
@@ -55,13 +91,14 @@ class EventTile extends StatelessWidget {
                   color: Theme.of(context).colorScheme.tertiary,
                 ),
                 child: Text(
-                  'Location: ' + location,
+                  'Location: ' + widget.location,
                   style: TextStyle(
-                      color: Theme.of(context).colorScheme.secondary,
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold),
+                    color: Theme.of(context).colorScheme.secondary,
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              )
+              ),
             ],
           ),
           SizedBox(width: 10),
@@ -69,7 +106,7 @@ class EventTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                eventName,
+                widget.eventName,
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.primary,
                   fontSize: 18,
@@ -78,7 +115,7 @@ class EventTile extends StatelessWidget {
               ),
               SizedBox(height: 2),
               Text(
-                eventTime,
+                widget.eventTime,
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.primary,
                   fontSize: 14,
@@ -94,11 +131,12 @@ class EventTile extends StatelessWidget {
                       color: Theme.of(context).colorScheme.primary,
                     ),
                     child: Text(
-                      sport,
+                      widget.sport,
                       style: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary,
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold),
+                        color: Theme.of(context).colorScheme.secondary,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   SizedBox(width: 5),
@@ -109,11 +147,12 @@ class EventTile extends StatelessWidget {
                       color: Theme.of(context).colorScheme.primary,
                     ),
                     child: Text(
-                      skillLevel,
+                      widget.skillLevel,
                       style: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary,
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold),
+                        color: Theme.of(context).colorScheme.secondary,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ],
@@ -123,9 +162,9 @@ class EventTile extends StatelessWidget {
                 children: [
                   Text(
                     'Availability: ' +
-                        curr_avail.toString() +
+                        _currentAvailability.toString() +
                         '/' +
-                        max_avail.toString(),
+                        widget.max_avail.toString(),
                     style: TextStyle(
                       color: Colors.green,
                       fontSize: 14,
@@ -133,22 +172,35 @@ class EventTile extends StatelessWidget {
                   ),
                   SizedBox(width: 15),
                   GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => EventFormConfirmation(
-                          image: image,
-                          eventName: eventName,
-                          eventTime: eventTime,
-                          location: location,
-                          sport: sport,
-                          skillLevel: skillLevel,
-                          curr_avail: curr_avail,
-                          max_avail: max_avail,
+                    onTap: () async {
+                      if (_spotConfirmed) {
+                        _showAlreadyConfirmedMessage();
+                        return;
+                      }
+                      if (_currentAvailability >= widget.max_avail) {
+                        _showMaxAvailabilityMessage();
+                        return;
+                      }
+                      final newAvailability = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EventFormConfirmation(
+                            image: widget.image,
+                            eventName: widget.eventName,
+                            eventTime: widget.eventTime,
+                            location: widget.location,
+                            sport: widget.sport,
+                            skillLevel: widget.skillLevel,
+                            curr_avail: _currentAvailability,
+                            max_avail: widget.max_avail,
+                          ),
                         ),
-                      ),
-                    );
+                      );
+
+                      if (newAvailability != null) {
+                        // Only increment if the confirmation returns a value
+                        _incrementAvailability();
+                      }
                     },
                     child: Container(
                       padding: EdgeInsets.all(5),
@@ -163,7 +215,7 @@ class EventTile extends StatelessWidget {
                     ),
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ],

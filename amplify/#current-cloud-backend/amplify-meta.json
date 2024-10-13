@@ -1,0 +1,58 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-findmybuddy-dev-c7d90-authRole",
+      "UnauthRoleArn": "arn:aws:iam::301132508200:role/amplify-findmybuddy-dev-c7d90-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::301132508200:role/amplify-findmybuddy-dev-c7d90-authRole",
+      "Region": "us-west-2",
+      "DeploymentBucketName": "amplify-findmybuddy-dev-c7d90-deployment",
+      "UnauthRoleName": "amplify-findmybuddy-dev-c7d90-unauthRole",
+      "StackName": "amplify-findmybuddy-dev-c7d90",
+      "StackId": "arn:aws:cloudformation:us-west-2:301132508200:stack/amplify-findmybuddy-dev-c7d90/488f2ad0-8917-11ef-b4a7-02909ea0b161",
+      "AmplifyAppId": "d3cvc2iraxonlc"
+    }
+  },
+  "auth": {
+    "findmybuddy5a5de46c": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+      "frontendAuthConfig": {
+        "socialProviders": [],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": []
+        },
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-findmybuddy-dev-c7d90-deployment/amplify-cfn-templates/auth/findmybuddy5a5de46c-cloudformation-template.json",
+        "logicalId": "authfindmybuddy5a5de46c"
+      },
+      "lastPushTimeStamp": "2024-10-13T04:08:19.247Z",
+      "output": {
+        "UserPoolId": "us-west-2_RJLrMm9dq",
+        "AppClientIDWeb": "79nh8ba22cl7lli0eeh51n59jp",
+        "AppClientID": "5hegk5k440gabtjfe7o9i4j2pl",
+        "IdentityPoolId": "us-west-2:3512ac74-a08a-4950-b97f-02a42a9e7a25",
+        "UserPoolArn": "arn:aws:cognito-idp:us-west-2:301132508200:userpool/us-west-2_RJLrMm9dq",
+        "IdentityPoolName": "findmybuddy5a5de46c_identitypool_5a5de46c__dev",
+        "UserPoolName": "findmybuddy5a5de46c_userpool_5a5de46c"
+      },
+      "lastPushDirHash": "7o4+YR9s5tFeFcSzRhumHtc9z88="
+    }
+  }
+}

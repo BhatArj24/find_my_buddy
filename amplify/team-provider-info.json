@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-findmybuddy-dev-c7d90-authRole",
+      "UnauthRoleArn": "arn:aws:iam::301132508200:role/amplify-findmybuddy-dev-c7d90-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::301132508200:role/amplify-findmybuddy-dev-c7d90-authRole",
+      "Region": "us-west-2",
+      "DeploymentBucketName": "amplify-findmybuddy-dev-c7d90-deployment",
+      "UnauthRoleName": "amplify-findmybuddy-dev-c7d90-unauthRole",
+      "StackName": "amplify-findmybuddy-dev-c7d90",
+      "StackId": "arn:aws:cloudformation:us-west-2:301132508200:stack/amplify-findmybuddy-dev-c7d90/488f2ad0-8917-11ef-b4a7-02909ea0b161",
+      "AmplifyAppId": "d3cvc2iraxonlc"
+    },
+    "categories": {
+      "auth": {
+        "findmybuddy5a5de46c": {}
+      }
+    }
+  }
+}

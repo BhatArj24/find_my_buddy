@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:find_my_buddy/pages/util/event_tile.dart';
 import 'package:flutter/material.dart';
 import 'event_form_page.dart'; // Import the event form page
 import 'user_profile_page.dart'; // Import the user profile page
@@ -155,6 +156,16 @@ class _HomePageState extends State<HomePage> {
                   ),
                   // display all the event tiles
                   SizedBox(height: 20),
+                  EventTile(
+                    image: 'assets/images/ima_building.jpg',
+                    eventName: "Pickleball",
+                    eventTime: "10:00 AM - 11:00 AM",
+                    location: "IMA Building",
+                    sport: "Pickleball",
+                    skillLevel: "amateur",
+                    curr_avail: 2,
+                    max_avail: 4,
+                  ),
                 ],
               ),
             ),

@@ -20,6 +20,8 @@ class _HomePageState extends State<HomePage> {
   bool _filterLocation = false;
   bool _filterSport = false;
   bool _filterSkill = false;
+  bool _sortByTime = false; // Add this line
+  bool _sortBySkill = false; // Add this line
 
   @override
   void initState() {
@@ -47,13 +49,12 @@ class _HomePageState extends State<HomePage> {
     final RenderBox button = context.findRenderObject() as RenderBox;
     final RenderBox overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
     final RelativeRect position = RelativeRect.fromRect(
-    Rect.fromPoints(
-      button.localToGlobal(Offset(0, 0), ancestor: overlay),
-      button.localToGlobal(button.size.bottomRight(Offset(0, button.size.height)), ancestor: overlay),
-    ),
-    Offset.zero & overlay.size,
-  );
-
+      Rect.fromPoints(
+        button.localToGlobal(Offset(0, 0), ancestor: overlay),
+        button.localToGlobal(button.size.bottomRight(Offset(0, button.size.height)), ancestor: overlay),
+      ),
+      Offset.zero & overlay.size,
+    );
 
     showMenu(
       context: context,
@@ -81,7 +82,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 3.0),
+                      padding: const EdgeInsets.symmetric(vertical: 0),
                       child: CheckboxListTile(
                         contentPadding: EdgeInsets.symmetric(horizontal: 0),
                         title: Text('Sport'),
@@ -94,7 +95,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 3.0),
+                      padding: const EdgeInsets.symmetric(vertical: 0),
                       child: CheckboxListTile(
                         contentPadding: EdgeInsets.symmetric(horizontal: 0),
                         title: Text('Skill'),
@@ -116,6 +117,58 @@ class _HomePageState extends State<HomePage> {
       elevation: 8.0,
     );
   }
+
+void _showSortDropdown(BuildContext context) {
+  final RenderBox button = context.findRenderObject() as RenderBox;
+  final RenderBox overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
+  final RelativeRect position = RelativeRect.fromRect(
+    Rect.fromPoints(
+      button.localToGlobal(Offset(button.size.width, 0), ancestor: overlay), // Horizontal offset for right alignment
+      button.localToGlobal(button.size.bottomRight(Offset(button.size.width + 150, button.size.height)), ancestor: overlay), // Adjust width as needed
+    ),
+    Offset.zero & overlay.size,
+  );
+
+  showMenu(
+    context: context,
+    position: position,
+    items: [
+      PopupMenuItem(
+        child: StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return CheckboxListTile(
+              title: Text('Sort by Time'),
+              value: _sortByTime,
+              onChanged: (bool? value) {
+                setState(() {
+                  _sortByTime = value!;
+                });
+                Navigator.pop(context);
+              },
+            );
+          },
+        ),
+      ),
+      PopupMenuItem(
+        child: StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return CheckboxListTile(
+              title: Text('Sort by Skill'),
+              value: _sortBySkill,
+              onChanged: (bool? value) {
+                setState(() {
+                  _sortBySkill = value!;
+                });
+                Navigator.pop(context);
+              },
+            );
+          },
+        ),
+      ),
+    ],
+    elevation: 8.0,
+  );
+}
 
   @override
   Widget build(BuildContext context) {
@@ -257,9 +310,9 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   SizedBox(height: 10),
-                  // Filter button
+                  // Filter and Sort buttons
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       ElevatedButton.icon(
                         onPressed: () {
@@ -267,6 +320,13 @@ class _HomePageState extends State<HomePage> {
                         },
                         icon: Icon(Icons.filter_list),
                         label: Text('Filter'),
+                      ),
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          _showSortDropdown(context);
+                        },
+                        icon: Icon(Icons.sort),
+                        label: Text('Sort'),
                       ),
                     ],
                   ),

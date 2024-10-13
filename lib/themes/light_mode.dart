@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 
 ThemeData lightMode = ThemeData(
@@ -6,6 +8,6 @@ ThemeData lightMode = ThemeData(
     primary: Color(0xFF4B2E83),
     secondary: Colors.white,
     tertiary: Color(0xFFB7A57A),
-    inversePrimary: Colors.grey.shade700,
+    inversePrimary: Colors.green,
   ),
 );

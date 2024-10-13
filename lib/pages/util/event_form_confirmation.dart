@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class EventFormConfirmation extends StatelessWidget {
+class EventFormConfirmation extends StatefulWidget {
   final String image;
   final String eventName;
   final String eventTime;
@@ -9,6 +9,7 @@ class EventFormConfirmation extends StatelessWidget {
   final String skillLevel;
   final int curr_avail;
   final int max_avail;
+  final bool spotConfirmed;
 
   const EventFormConfirmation({
     Key? key,
@@ -20,7 +21,37 @@ class EventFormConfirmation extends StatelessWidget {
     required this.skillLevel,
     required this.curr_avail,
     required this.max_avail,
+    this.spotConfirmed = false,
   }) : super(key: key);
+
+  @override
+  _EventFormConfirmationState createState() => _EventFormConfirmationState();
+}
+
+class _EventFormConfirmationState extends State<EventFormConfirmation> {
+  late int _currentAvailability;
+  late bool _spotConfirmed;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentAvailability = widget.curr_avail;
+    _spotConfirmed = widget.spotConfirmed;
+  }
+
+  void _incrementAvailability() {
+    if (!_spotConfirmed && _currentAvailability < widget.max_avail) {
+      setState(() {
+        _currentAvailability++;
+        _spotConfirmed = true;
+      });
+    }
+  }
+
+  void _confirmSpot() {
+    _incrementAvailability();
+    Navigator.pop(context, {'currentAvailability': _currentAvailability, 'spotConfirmed': _spotConfirmed});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,47 +65,45 @@ class EventFormConfirmation extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
-              child: image.startsWith('http') || image.startsWith('https')
-                  ? Image.network(image, height: 200, fit: BoxFit.cover)
-                  : Image.asset(image, height: 200, fit: BoxFit.cover),
+              child: widget.image.startsWith('http') || widget.image.startsWith('https')
+                  ? Image.network(widget.image, height: 200, fit: BoxFit.cover)
+                  : Image.asset(widget.image, height: 200, fit: BoxFit.cover),
             ),
             SizedBox(height: 20),
             Text(
-              eventName,
+              widget.eventName,
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 10),
             Text(
-              'Time: $eventTime',
+              'Time: ${widget.eventTime}',
               style: TextStyle(fontSize: 18),
             ),
             SizedBox(height: 10),
             Text(
-              'Location: $location',
+              'Location: ${widget.location}',
               style: TextStyle(fontSize: 18),
             ),
             SizedBox(height: 10),
             Text(
-              'Sport: $sport',
+              'Sport: ${widget.sport}',
               style: TextStyle(fontSize: 18),
             ),
             SizedBox(height: 10),
             Text(
-              'Skill Level: $skillLevel',
+              'Skill Level: ${widget.skillLevel}',
               style: TextStyle(fontSize: 18),
             ),
             SizedBox(height: 10),
             Text(
-              'Availability: $curr_avail/$max_avail',
+              'Availability: $_currentAvailability/${widget.max_avail}',
               style: TextStyle(fontSize: 18, color: Colors.green),
             ),
             SizedBox(height: 20),
             Center(
               child: ElevatedButton(
-                onPressed: () {
-                  // Add confirmation logic here
-                },
-                child: Text('Confirm'),
+                onPressed: _spotConfirmed ? null : _confirmSpot,
+                child: Text(_spotConfirmed ? 'Spot Confirmed' : 'Confirm'),
               ),
             ),
           ],

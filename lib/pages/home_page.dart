@@ -2,8 +2,9 @@
 
 import 'package:find_my_buddy/pages/util/event_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:amplify_flutter/amplify_flutter.dart'; // Import Amplify
 import 'event_form_page.dart'; // Import the event form page
-import 'user_profile_page.dart'; // Import the user profile page
+import 'user_profile_page.dart' as custom_profile; // Use an alias for the user profile import
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -14,6 +15,29 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
+  String _username = 'Guest'; // Default username
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchCurrentUser(); // Fetch the current user on init
+  }
+
+  Future<void> _fetchCurrentUser() async {
+    try {
+      // Fetch the current user's attributes
+      final userAttributes = await Amplify.Auth.fetchUserAttributes();
+      final usernameAttribute = userAttributes
+          .firstWhere((attr) => attr.userAttributeKey.key == 'name');
+
+      // Update the state with the fetched username
+      setState(() {
+        _username = usernameAttribute.value;
+      });
+    } catch (e) {
+      print('Error fetching user attributes: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +59,10 @@ class _HomePageState extends State<HomePage> {
               );
               break;
             case 2:
-              // Navigate to the UserProfilePage when the person icon is tapped
+              // Navigate to the custom_profile.UserProfilePage when the person icon is tapped
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => UserProfile()),
+                MaterialPageRoute(builder: (context) => custom_profile.UserProfile()),
               );
               break;
           }
@@ -98,7 +122,7 @@ class _HomePageState extends State<HomePage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Arjun Bhat",
+                                _username, // Display the dynamic username
                                 style: TextStyle(
                                   color: Theme.of(context).colorScheme.tertiary,
                                   fontSize: 20,
@@ -106,7 +130,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                               Text(
-                                '23 Jan, 2024',
+                                '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}', // Display the current date
                                 style: TextStyle(
                                   color: Theme.of(context).colorScheme.tertiary,
                                 ),
@@ -154,7 +178,7 @@ class _HomePageState extends State<HomePage> {
                           EdgeInsets.symmetric(vertical: 0, horizontal: 20),
                     ),
                   ),
-                  // display all the event tiles
+                  // Display all the event tiles
                   SizedBox(height: 20),
                   EventTile(
                     image: 'assets/images/ima_building.jpg',

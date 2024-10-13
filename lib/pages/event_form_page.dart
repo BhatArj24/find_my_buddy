@@ -49,14 +49,11 @@ class _EventCreationPageState extends State<EventForm> {
   }
 
   String _formatTimeOfDay(TimeOfDay time) {
-    final now = DateTime.now();
-    final dt = DateTime(now.year, now.month, now.day, time.hour, time.minute);
     final format = MaterialLocalizations.of(context).formatTimeOfDay(time);
     return format;
   }
 
   String _formatEventDate(DateTime date) {
-    final now = DateTime.now();
     final format = MaterialLocalizations.of(context).formatFullDate(date);
     return format;
   }
@@ -67,9 +64,7 @@ class _EventCreationPageState extends State<EventForm> {
       appBar: AppBar(
         title: const Text('Create Event'),
       ),
-      backgroundColor: Theme.of(context)
-          .colorScheme
-          .surface, // Set the background color here
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -199,14 +194,7 @@ class _EventCreationPageState extends State<EventForm> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    Navigator.pop(context, {
-                      'name': _eventName,
-                      'desiredBuddies': _desiredBuddies,
-                      'date': _eventDate,
-                      'time': _formattedTime,
-                      'sport': _selectedSport,
-                      'location': _selectedLocation,
-                    });
+                    // send to backend
                   }
                 },
                 style: ElevatedButton.styleFrom(

@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_interpolation_to_compose_strings, prefer_const_constructors
 
+import 'package:find_my_buddy/pages/util/event_form_confirmation.dart';
 import 'package:flutter/material.dart';
+
 
 class EventTile extends StatelessWidget {
   final image;
@@ -132,7 +134,21 @@ class EventTile extends StatelessWidget {
                   SizedBox(width: 15),
                   GestureDetector(
                     onTap: () {
-                      print(' tapped!');
+                      Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EventFormConfirmation(
+                          image: image,
+                          eventName: eventName,
+                          eventTime: eventTime,
+                          location: location,
+                          sport: sport,
+                          skillLevel: skillLevel,
+                          curr_avail: curr_avail,
+                          max_avail: max_avail,
+                        ),
+                      ),
+                    );
                     },
                     child: Container(
                       padding: EdgeInsets.all(5),

@@ -69,7 +69,7 @@ class _EventCreationPageState extends State<EventForm> {
       ),
       backgroundColor: Theme.of(context)
           .colorScheme
-          .tertiary, // Set the background color here
+          .surface, // Set the background color here
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -77,9 +77,7 @@ class _EventCreationPageState extends State<EventForm> {
           child: Column(
             children: <Widget>[
               TextFormField(
-                decoration: const InputDecoration(
-                    labelText: 'Event Name',
-                    labelStyle: TextStyle(color: Color(0xFF4B2E83))),
+                decoration: const InputDecoration(labelText: 'Event Name'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter an event name';
@@ -211,7 +209,11 @@ class _EventCreationPageState extends State<EventForm> {
                     });
                   }
                 },
-                child: const Text('Create Event'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                ),
+                child: const Text('Create Event',
+                    style: TextStyle(color: Colors.white)),
               ),
             ],
           ),

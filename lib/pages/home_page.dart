@@ -17,6 +17,10 @@ class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
   String _username = 'Guest'; // Default username
 
+  bool _filterLocation = false;
+  bool _filterSport = false;
+  bool _filterSkill = false;
+
   @override
   void initState() {
     super.initState();
@@ -37,6 +41,80 @@ class _HomePageState extends State<HomePage> {
     } catch (e) {
       print('Error fetching user attributes: $e');
     }
+  }
+
+  void _showFilterDropdown(BuildContext context) {
+    final RenderBox button = context.findRenderObject() as RenderBox;
+    final RenderBox overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
+    final RelativeRect position = RelativeRect.fromRect(
+    Rect.fromPoints(
+      button.localToGlobal(Offset(0, 0), ancestor: overlay),
+      button.localToGlobal(button.size.bottomRight(Offset(0, button.size.height)), ancestor: overlay),
+    ),
+    Offset.zero & overlay.size,
+  );
+
+
+    showMenu(
+      context: context,
+      position: position,
+      items: [
+        PopupMenuItem(
+          child: Container(
+            width: button.size.width,
+            child: StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 0),
+                      child: CheckboxListTile(
+                        contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                        title: Text('Location'),
+                        value: _filterLocation,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            _filterLocation = value!;
+                          });
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 3.0),
+                      child: CheckboxListTile(
+                        contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                        title: Text('Sport'),
+                        value: _filterSport,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            _filterSport = value!;
+                          });
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 3.0),
+                      child: CheckboxListTile(
+                        contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                        title: Text('Skill'),
+                        value: _filterSkill,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            _filterSkill = value!;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ),
+      ],
+      elevation: 8.0,
+    );
   }
 
   @override
@@ -178,8 +256,22 @@ class _HomePageState extends State<HomePage> {
                           EdgeInsets.symmetric(vertical: 0, horizontal: 20),
                     ),
                   ),
-                  // Display all the event tiles
+                  SizedBox(height: 10),
+                  // Filter button
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          _showFilterDropdown(context);
+                        },
+                        icon: Icon(Icons.filter_list),
+                        label: Text('Filter'),
+                      ),
+                    ],
+                  ),
                   SizedBox(height: 20),
+                  // Display all the event tiles
                   EventTile(
                     image: 'assets/images/ima_building.jpg',
                     eventName: "Pickleball",

@@ -74,6 +74,18 @@ class _UserProfilePageState extends State<UserProfile> {
     );
   }
 
+  Future<void> _logout() async {
+    try {
+      await Amplify.Auth.signOut();
+      Navigator.of(context).popUntil((route) => route.isFirst); // Clear the navigation stack
+    } catch (e) {
+      print('Error signing out: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error signing out. Please try again.')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -151,9 +163,7 @@ class _UserProfilePageState extends State<UserProfile> {
                       ),
                       SizedBox(height: 20),
                       ElevatedButton(
-                        onPressed: () {
-                          // Logout functionality to be added later
-                        },
+                        onPressed: _logout,
                         child: Text('Logout'),
                       ),
                     ],
